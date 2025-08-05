@@ -1,0 +1,191 @@
+aggregate function
+
+create table employee (emp_id int,manager_id int,name varchar(50),salary bigint);
+insert into employee values(1,201,'Abi',15000),(2,202,'Anu',17000),(3,203,'anne',20000),(4,204,'Divya',25000),(5,205,'Iniya',21000),(6,206,'selvi',30000);
+select*from employee;
+select count(*) as total_employees from employee;
+select sum(salary) as total_salary from employee;
+select avg(salary)as avg_salary from employee;
+select max(salary) as max_salary from employee;
+select min(salary) as min_salary from employee;
+ 
+
+
+
+joins
+create database join1;
+use join1;
+
+create table customer(customer_id int,name varchar(50));
+
+create table orders(order_id int,customer_id int,product varchar(25));
+
+insert into customer values (1,'Asha'),(2,'Anne'),(3,'Arun');
+
+insert into orders values (101,1,'laptop'),(102,1,'mouse'),(103,1,'keyboard'),(104,4,'monitor');
+
+select customer.name,orders.product from customer inner join orders on customer.customer_id=orders.customer_id;
+
+select customer.name,orders.product from customer left join orders on customer.customer_id=orders.customer_id;
+
+select customer.name,orders.product from customer right join orders on customer.customer_id=orders.customer_id;
+
+select customer.name,orders.product from customer left join orders on customer.customer_id=orders.customer_id union
+select customer.name,orders.product from customer right join orders on customer.customer_id=orders.customer_id;
+
+
+
+
+
+
+
+
+
+
+
+logical operation
+
+create database employee;
+show databases;
+use employee;
+create table employees(emp_id int,emp_name varchar(50),emp_city varchar(25),emp_country varchar(50));
+insert into employees values(1,'John','Allahabad','India'),(2,'Emma','Patna','India'),(3,'Liam','Allahabad','India'),
+(4,'Olivia','Mumbai','India'),(5,'Tessa','Washington','USA');
+select*from employees;
+
+select*from employees where emp_city='Allahabad' AND emp_country='India';
+select*from employees where emp_city='Allahabad' OR emp_city='Patna';
+select*from employees where NOT emp_country='India';
+select*from employees where(emp_city='Allahabad' OR emp_city='Patna') AND emp_country='India';
+
+
+create table employees_US(emp_id int,emp_name varchar(10));
+insert into employees_US values(1,'Noah'),(2,'Tessa');
+select*from employees_US;
+
+create table employees_India(emp_id int,emp_name varchar(10));
+insert into employees_India values(1,'John'),(2,'Emma'),(3,'Liam');
+select*from employees_India;
+
+select emp_name from employees_India;
+select emp_name from employees_US;
+select emp_name from employees_India;
+
+
+
+
+
+
+
+
+Entity Relationship
+
+
+create database ER;
+show databases;
+use ER;
+create table student(student_id int primary key,stu_name varchar(20),DOB date,phone varchar(10),Address varchar(50));
+create table courses(course_id int primary key,course_name varchar(15),Duration varchar(20),fees int);
+create table enrollment(enrollment_id int primary key,student_id int,course_id int,constraint foreign key(student_id)
+ references student(student_id),constraint foreign key(course_id) references course(course_id));
+create table faculty(faculty_id int primary key,Name varchar(25),Qualification varchar(50),phone varchar(10));
+create table department(dept_id int primary key,dept_name varchar(50),faculty_id int,constraint foreign key(faculty_id)
+ references faculty(faculty_id));
+
+
+
+
+
+student db
+
+create database hcc;
+show databases;
+use hcc;
+create table students (id int primary key, name varchar(50),age int,grade varchar(2));
+Insert into students values(1,'John',20,'A');
+insert into students values(2,'Alice',19,'A'),(3,'James',21,'C'),(4,'sarakhan',22,'A');
+select*from students;
+select name,grade from students;
+select*from students where age>20;
+select name from students where grade='A' AND  age<21;
+select*from students where grade!='C';
+select*from students where age=19 or grade='B';
+create table students_2024(id int primary key, name varchar(50),age int,grade varchar(2));
+insert into students_2024 values(1,'Anee',20,'B'),(2,'Alice',19,'A'),(3,'James',21,'C'),(4,'Pricilla',20,'O');
+select distinct name from students UNION select name from students_2024;
+select name from students intersect select name from students_2024;
+select name from students EXCEPT select name from students_2024;
+select*from students where name like'J%';
+select*from students where name like '%a%';
+select*from students order by age;
+select*from students order by age Desc;
+select name from students order by age ASC limit 2;
+select count(*)AS total_students from students;
+select max(age) As max_age from students;
+select*from students where age>18 And grade<>'C';
+select name from students where grade='A' or (age<20 and grade='B');
+
+
+
+
+ 
+
+DML
+
+use ai_user1_db;
+create table students(students_id char(8),name_of_students varchar(20),age bigint,department varchar(25)); 
+insert into students values('01','kavya',20,'CS');
+insert into students values('02','arjun',21,'IT');
+insert into students values('03','priya',22,'AI');
+select*from students;
+desc students;
+
+create table courses(course_id char(8),course_name char(25),credits bigint); 
+insert into courses values('101','DBMS','4');
+insert into courses values('102','AI BASICS','3');
+insert into courses values('103','WEB DEV','3');
+insert into courses values('104','CLOUDE COMPUTING','3');
+select*from courses;
+desc courses;
+
+
+create table enrollment1(students_id varchar(15),course_id varchar(15),grade varchar(25));
+insert into enrollment1 values(01,101,'A');
+insert into enrollment1 values (02,102,'B');
+insert into enrollment1 values (03,103,'C');
+select*from  enrollment1;
+desc enrollment1;
+delete from enrollment1 where students_id='1';
+delete from enrollment1 where students_id='2';
+delete from enrollment1 where students_id='3';
+delete from enrollment1 where students_id='4';
+
+INSERT into students values(04,'anne',23,'AI');
+
+insert into courses values (104,'cloude computing',03);
+
+insert into enrollment1 values(04,105,'A');
+
+select*from students where department='AI';
+
+update students set department='CS' where name_of_students='arjun';
+
+update courses set credits=credits+1;
+
+delete from courses where course_name ='web dev';
+
+SELECT S.name_of_students,e.course_id FROM students S JOIN enrollment1 e ON S.students_id=e.students_id;
+
+delete from students where name_of_students='arjun';
+
+delete from courses
+where course_id=1;
+
+
+
+
+
+
+
+
+
